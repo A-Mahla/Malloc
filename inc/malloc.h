@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 01:42:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/17 21:56:56 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/18 00:13:44 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,11 @@
 # define ALIGN(size) (((size) + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1))
 # define HEADER_SIZE (ALIGN(sizeof(size_t)))
 
-#define offsetof(TYPE, MEMBER) ((size_t)&((TYPE *)0)->MEMBER)
-#define container_of(ptr, type, member)	\
-({										\
-    const typeof( ((type *)0)->member ) *__mptr = (ptr);	\
-    (type *)( (char *)__mptr - offsetof(type,member) );		\
-})
+typedef struct free_chunk_s {
+	size_t				size;
+	struct free_chunk_s	*next;
+	struct free_chunk_s	*prev;
+} free_chunk_t;
 
 void	show_alloc_mem(void);
 

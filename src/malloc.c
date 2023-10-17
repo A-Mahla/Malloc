@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 13:00:36 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/17 22:21:28 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/18 00:14:33 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ void	*ft_malloc(size_t size)
 	chunk_size = ALIGN(size + HEADER_SIZE);
 	chunk = mmap(0, chunk_size, PROT_READ | PROT_WRITE,
 				 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	*((uintptr_t *)chunk) = chunk_size | 1;
-	return chunk;
+	*((size_t *)chunk) = chunk_size | 1;
+	return (void *)((uint8_t *)chunk + HEADER_SIZE);
 }

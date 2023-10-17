@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 22:23:47 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/17 22:32:50 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/17 23:17:11 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 void	free(void *ptr)
 {
-	*((uint8_t *)ptr) -= HEADER_SIZE;
-	*((uintptr_t *)ptr) &= ~1L;
+	uint8_t	*tmp;
+
+	tmp = (uint8_t *)ptr - HEADER_SIZE;
+	*((size_t *)tmp) &= ~1L;
 }
