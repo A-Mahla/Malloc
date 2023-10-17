@@ -25,7 +25,11 @@ To run the command, open your terminal and follow these steps:
       gcc -o a.out *.o -I </path/to/project/directory>/libft/includes -L /path/to/project/directory -lft
       ```
 
+<br>
+
 ## Functions
+
+<br>
 
 ### Ft_printf :
 
@@ -55,6 +59,8 @@ To run the command, open your terminal and follow these steps:
         - [`.`](https://learn.microsoft.com/en-us/cpp/c-runtime-library/format-specification-syntax-printf-and-wprintf-functions?view=msvc-170#precision) the precision specification
         - [`\<number\>`](https://learn.microsoft.com/en-us/cpp/c-runtime-library/format-specification-syntax-printf-and-wprintf-functions?view=msvc-170#width) the width specification field.
 
+
+<br>
    
 ### Ft_getline :
 
@@ -63,6 +69,8 @@ To run the command, open your terminal and follow these steps:
    ```
 
    - [`ft_getline`](libft/ft_getline/ft_getline.c#L15) - ```char	*ft_getline(int fd);```
+
+<br>
 
 ### Others Functions :
 
