@@ -6,7 +6,7 @@
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/10/17 14:09:40 by amahla ###       ########     ########    #
+#    Updated: 2023/10/17 15:15:06 by amahla ###       ########     ########    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ endif
 
 all		: $(NAME)
 
-$(addprefix $(OUTDIR)/, $(SRCDIR))/%.o	: $(SRCDIR)/%.c 
+$(OUTDIR)/%.o	: %.c 
 	$(CC) $(DFLAGS) $(CFLAGS) $(INC) -o $@ -c $<
 
 $(NAME) : $(OUTDIR)	$(addprefix $(OUTDIR)/, $(OBJ))
