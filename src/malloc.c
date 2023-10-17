@@ -6,12 +6,13 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 13:00:36 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/18 00:14:33 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/18 01:20:49 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 # include "malloc.h"
+
+//static malloc_segment_t	msegment[3];
 
 
 void	*ft_malloc(size_t size)
