@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 01:42:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/17 13:41:17 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/17 15:21:34 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include "ft_printf.h"
 
+# define SPACE 100
 # define TINY 128
 # define SMALL 4096
 # define ALIGNMENT 16
@@ -28,8 +29,11 @@
     (type *)( (char *)__mptr - offsetof(type,member) );		\
 })
 
+void	show_alloc_mem(void);
+
 // TO DELETE
 void	*ft_malloc(size_t size);
+
 
 /////////////
 
