@@ -6,13 +6,15 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 01:42:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/17 15:21:34 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/17 21:56:56 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
 # ifndef __MALLOC_H__
 # define __MALLOC_H__
 
+# include <stdint.h>
+# include <sys/mman.h>
 # include "libft.h"
 # include "ft_printf.h"
 
@@ -21,6 +23,7 @@
 # define SMALL 4096
 # define ALIGNMENT 16
 # define ALIGN(size) (((size) + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1))
+# define HEADER_SIZE (ALIGN(sizeof(size_t)))
 
 #define offsetof(TYPE, MEMBER) ((size_t)&((TYPE *)0)->MEMBER)
 #define container_of(ptr, type, member)	\
