@@ -6,7 +6,7 @@
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/10/17 02:27:42 by amahla ###       ########     ########    #
+#    Updated: 2023/10/17 02:36:51 by amahla ###       ########     ########    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME	= 	libft_malloc_$(HOSTTYPE).so
 CC		:= 	gcc
 CFLAGS	:= 	-Wall -Werror -Wextra
 LIBSRC 	:= 	libft
-INC		:= 	-I $(addprefix 	$(LIBSRC)/, includes)
+INC		:= 	-I inc -I $(addprefix 	$(LIBSRC)/, includes)
 LIBFT	:= 	-L libft -lft
 OUTDIR 	:= 	obj
 SRC		:= 	
@@ -35,7 +35,7 @@ $(OUTDIR)/%o	: $(SRC)
 
 $(NAME) : 	$(OUTDIR) $(addprefix $(OUTDIR)/, $(OBJ))
 	@$(MAKE) -j -C $(LIBSRC) > /dev/null
-	$(CC) $@ $(addprefix $(OUTDIR)/, $(OBJ)) $(INC) $(LIBFT)
+	$(CC) $(CFLAGS) $@ $(addprefix $(OUTDIR)/, $(OBJ)) $(INC) $(LIBFT)
 
 $(OUTDIR)	:
 	@mkdir -p $@
