@@ -53,6 +53,7 @@ SRC		:= 	ft_itoa.c				\
 			ft_lstclear.c			\
 			ft_lstdelone.c			\
 			ft_lstiter.c 			\
+			ft_list_remove_if.c 	\
 			$(addprefix 	ft_printf/, 	ft_flags.c 			\
 											utils_1.c 			\
 											utils_2.c 			\

@@ -6,20 +6,25 @@
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/10/17 02:36:51 by amahla ###       ########     ########    #
+#    Updated: 2023/10/17 14:09:40 by amahla ###       ########     ########    #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME	= 	libft_malloc_$(HOSTTYPE).so
+#NAME	= 	libft_malloc_$(HOSTTYPE).so
+NAME	= 	malloc_$(HOSTTYPE)
 CC		:= 	gcc
 CFLAGS	:= 	-Wall -Werror -Wextra
-LIBSRC 	:= 	libft
-INC		:= 	-I inc -I $(addprefix 	$(LIBSRC)/, includes)
+DFLAGS	:= -MMD -MP
+LIBDIR 	:= 	libft
+INC		:= 	-I inc -I $(addprefix 	$(LIBDIR)/, $(addprefix libft/, includes))
 LIBFT	:= 	-L libft -lft
 OUTDIR 	:= 	obj
-SRC		:= 	
+SRCDIR	:= src
+SRC		:= $(addprefix $(SRCDIR)/,	malloc.c \
+									main.c)
 OBJ		:= $(SRC:.c=.o)
+DEP 	:= $(SRC:.c=.d)
 RM		:= rm -rf
 
 
@@ -30,28 +35,28 @@ endif
 
 all		: $(NAME)
 
-$(OUTDIR)/%o	: $(SRC) 
-	$(CC) $(CFLAGS) $(INC) -o $@ -c $<
+$(addprefix $(OUTDIR)/, $(SRCDIR))/%.o	: $(SRCDIR)/%.c 
+	$(CC) $(DFLAGS) $(CFLAGS) $(INC) -o $@ -c $<
 
-$(NAME) : 	$(OUTDIR) $(addprefix $(OUTDIR)/, $(OBJ))
-	@$(MAKE) -j -C $(LIBSRC) > /dev/null
-	$(CC) $(CFLAGS) $@ $(addprefix $(OUTDIR)/, $(OBJ)) $(INC) $(LIBFT)
+$(NAME) : $(OUTDIR)	$(addprefix $(OUTDIR)/, $(OBJ))
+	@$(MAKE) -j -C $(LIBDIR) > /dev/null
+	$(CC) $(CFLAGS) -o $@ $(addprefix $(OUTDIR)/, $(OBJ)) $(INC) $(LIBFT)
 
 $(OUTDIR)	:
-	@mkdir -p $@
+	@mkdir -p $(addprefix $@/, $(SRCDIR))
 
 .PHONY	: all clean fclean re
 
 clean	:
-	@$(MAKE) clean -C $(LIBSRC) > /dev/null
+	@$(MAKE) clean -C $(LIBDIR) > /dev/null
 	$(RM) $(OUTDIR)
 
 fclean	: clean
-	@$(MAKE) fclean -C $(LIBSRC) > /dev/null
+	@$(MAKE) fclean -C $(LIBDIR) > /dev/null
 	$(RM) $(NAME)
 
 re		: fclean
-	@$(MAKE) re -C $(LIBSRC) > /dev/null
+	@$(MAKE) re -C $(LIBDIR) > /dev/null
 	make all
 
--include	$(addprefix $(OUTDIR)/,$(SRS:.c=.d)))
+-include	$(addprefix $(OUTDIR)/, $(DEP)))
