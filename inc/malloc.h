@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 01:42:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/18 01:27:50 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/18 02:22:07 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define SMALL_SIZE 4096
 # define ALIGNMENT 16
 # define ALIGN(size) (((size) + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1))
-# define HEADER_SIZE (ALIGN(sizeof(size_t)))
+# define HEADER_SIZE (ALIGN(sizeof(size_t) + sizeof(malloc_segment_t *)))
 
 
 enum chunk_size_e {
@@ -36,17 +36,11 @@ enum chunk_size_e {
 
 typedef struct malloc_segment_s {
 	size_t					size;
-	void					*start;
 	struct malloc_segment	*next;
+	void					*data;
 } malloc_segment_t;
 
-typedef struct free_chunk_s {
-	size_t				size;
-	struct free_chunk_s	*next;
-	struct free_chunk_s	*prev;
-} free_chunk_t;
-
-static malloc_segment_t msegment[3] __attribute__((unused));
+static malloc_segment_t *msegment[3] __attribute__((unused));
 
 void	show_alloc_mem(void);
 // TO DELETE

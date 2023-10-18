@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 13:35:00 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/18 01:27:27 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/18 02:25:24 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int	main(void)
 			printf("type\t: LARGE\n");
 			break;
 		}
-		printf("size\t:%zu\nstart\t:%p\nnext\t:%p\n", msegment[i].size, msegment[i].start, msegment[i].next);
+		msegment[i].next = malloc(sizeof(malloc_segment_t *));
+		printf("size\t:%zu\nnext\t:%zu\nstart\t:%zu\n", sizeof(msegment[i].size), sizeof(msegment[i].start), sizeof(msegment[i].next));
+		printf("%zu", HEADER_SIZE);
 	}
+	ft_malloc(16);
 	return 0;
 }
