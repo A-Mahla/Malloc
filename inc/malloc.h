@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   malloc.h                                        :+:       :+: :+: :+:    */
+/*   malloc.h                                           :+:      :+:    :+:   */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 01:42:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/18 02:22:07 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/18 16:05:19 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,25 @@
 # define ALIGNMENT 16
 # define ALIGN(size) (((size) + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1))
 # define HEADER_SIZE (ALIGN(sizeof(size_t) + sizeof(malloc_segment_t *)))
+# define offsetof(TYPE, MEMBER) ((size_t)&((TYPE *)0)->MEMBER)
+#define container_of(ptr, type, member)	\
+({	\
+    const typeof( ((type *)0)->member ) *__mptr = (ptr);	\\
+    (type *)( (char *)__mptr - offsetof(type,member) );		\
+})
 
 
-enum chunk_size_e {
+enum chunk_size_e
+{
 	TINY = 0,
 	SMALL,
 	LARGE
 };
 
-typedef struct malloc_segment_s {
+typedef struct malloc_segment_s
+{
 	size_t					size;
-	struct malloc_segment	*next;
-	void					*data;
+	struct malloc_segment_s	*next;
 } malloc_segment_t;
 
 static malloc_segment_t *msegment[3] __attribute__((unused));

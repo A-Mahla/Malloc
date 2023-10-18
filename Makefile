@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                     :::       :::     :::    #
-#    Makefile                                        :+:       :+: :+: :+:     #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                  +:++:+     +:+  +  +:+      #
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/10/17 22:23:26 by amahla ###       ########     ########    #
+#    Updated: 2023/10/18 15:26:24 by amahla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,14 +39,18 @@ all		: $(NAME)
 $(OUTDIR)/%.o	: %.c 
 	$(CC) $(DFLAGS) $(CFLAGS) $(INC) -o $@ -c $<
 
-$(NAME) : $(OUTDIR)	$(addprefix $(OUTDIR)/, $(OBJ))
+$(NAME)	: $(OUTDIR)	$(addprefix $(OUTDIR)/, $(OBJ))
 	@$(MAKE) -j -C $(LIBDIR) > /dev/null
 	$(CC) $(CFLAGS) -o $@ $(addprefix $(OUTDIR)/, $(OBJ)) $(INC) $(LIBFT)
 
 $(OUTDIR)	:
 	@mkdir -p $(addprefix $@/, $(SRCDIR))
 
+
 .PHONY	: all clean fclean re
+
+debug	: CFLAGS=-g3 -Wall -Werror -Wextra
+debug	: all
 
 clean	:
 	@$(MAKE) clean -C $(LIBDIR) > /dev/null
@@ -58,6 +62,6 @@ fclean	: clean
 
 re		: fclean
 	@$(MAKE) re -C $(LIBDIR) > /dev/null
-	make all
+	$(MAKE) all
 
 -include	$(addprefix $(OUTDIR)/, $(DEP)))
