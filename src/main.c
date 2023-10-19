@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 13:35:00 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/19 22:06:44 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/19 22:51:30 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	main(void)
 	test2[15] = '\0';
 	printf("%s\n", test2);
 
-	show_alloc_mem();
 	ft_free(test1);
+	show_alloc_mem();
 	ft_free(test2);
 	show_alloc_mem();
 	return 0;

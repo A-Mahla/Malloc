@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 22:23:47 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/19 22:29:37 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/19 22:54:01 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,33 @@ void	ft_free(void *ptr)
 		return;
 	tmp = (header_segment_t *)((uint8_t *)ptr - HEADER_SIZE);
 	tmp->size &= ~1L;
-	if (!page_empty(tmp))
-		printf("THE LIST I EMPTY");
-	else
-		printf("THE LIST FULL");
+
+	printf("%p\n", container_of(&tmp, header_segment_t, next));
+//	if (page_empty(tmp))
+//		printf("BEGIN\n");
+//	else
+//		printf("END\n");
 //	free_memory((header_segment_t *)tmp);
 }
 
-bool	page_empty(header_segment_t *ptr) {
-	if (ptr == hsegment[TINY] || ptr == hsegment[TINY]
-					|| ptr == hsegment[LARGE])
-		printf("THE LIST FULL");
+//bool	page_empty(header_segment_t *ptr) {
+//	if (((ptr == hsegment[TINY] || ptr == hsegment[TINY]
+//					|| ptr == hsegment[LARGE]) && !(ptr->size & 1))
+//			|| (ptr->next == NULL && !(ptr->size & 1)))
+//		return true;
+//	if (ptr->size & 1) {
+//		return false;
+//	}
+//	return page_empty(container_of(&ptr, header_segment_t, next));
 
-	if (((ptr == hsegment[TINY] || ptr == hsegment[TINY]
-					|| ptr == hsegment[LARGE]) && !(ptr->size & 1))
-			|| (ptr->next == NULL && !(ptr->size & 1)))
-		return 0;
-	else if (ptr->size & 1)
-		return 1;
-	return (page_empty(container_of(&ptr, header_segment_t, next)) == 1) == page_empty(ptr->next);
-}
+//	if (((ptr == hsegment[TINY] || ptr == hsegment[TINY]
+//					|| ptr == hsegment[LARGE]) && !(ptr->size & 1))
+//			|| (ptr->next == NULL && !(ptr->size & 1)))
+//		return 0;
+//	else if (ptr->size & 1)
+//		return 1;
+//	return (page_empty(container_of(&ptr, header_segment_t, next)) == 1) == page_empty(ptr->next);
+//}
 
 //void	free_memory(header_segment_t *ptr)
 //{
