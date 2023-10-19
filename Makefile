@@ -6,7 +6,7 @@
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/10/18 15:26:24 by amahla           ###   ########.fr        #
+#    Updated: 2023/10/19 19:32:31 by amahla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,9 @@ INC		:= 	-I inc -I $(addprefix 	$(LIBDIR)/, $(addprefix libft/, includes))
 LIBFT	:= 	-L libft -lft
 OUTDIR 	:= 	obj
 SRCDIR	:= src
-SRC		:= $(addprefix $(SRCDIR)/,	malloc.c	\
-									free.c		\
+SRC		:= $(addprefix $(SRCDIR)/,	malloc.c			\
+									free.c				\
+									show_alloc_mem.c	\
 									main.c)
 OBJ		:= $(SRC:.c=.o)
 DEP 	:= $(SRC:.c=.d)

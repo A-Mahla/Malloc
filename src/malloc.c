@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 13:00:36 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/19 15:34:14 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/19 21:15:45 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	*new_malloc(size_t size, enum chunk_size_e chunk_type);
 void	push_back_chunk(header_segment_t **begin, header_segment_t *next);
 void	split_segment(header_segment_t *to_split, size_t begin, size_t end);
 void	*find_chunk_free(size_t size_chunk, enum chunk_size_e chunk_type);
+
+header_segment_t *hsegment[3] = {NULL, NULL, NULL};
 
 
 /*
@@ -54,14 +56,16 @@ void	*find_chunk_free(size_t chunk_size, enum chunk_size_e chunk_type)
 	header_segment_t	*current = hsegment[chunk_type];
 	size_t				current_chunk_size;
 
-	if (!current)
+	if (!current) {
 		return new_malloc(chunk_size, chunk_type);
-	while (current->next) {
-		current_chunk_size = current->size & 1;
-		if (current_chunk_size >= chunk_size) {
+	}
+	while (current) {
+		current_chunk_size = current->size & ~1L;
+		if (current_chunk_size >= chunk_size && !(current->size & 1)) {
 			split_segment(current, chunk_size, current_chunk_size - chunk_size);
 			return (void *)((uint8_t *)current + HEADER_SIZE);
 		}
+		current = current->next;
 	}
 	return new_malloc(chunk_size, chunk_type);
 }
@@ -85,11 +89,11 @@ void	split_segment(header_segment_t *to_split, size_t begin, size_t end)
 		return;
 	current = to_split;
 	current->size = begin | 1;
-	tmp = current->next;
-	current->next = (header_segment_t *)((uint8_t *)to_split + begin);
-	current = current->next;
+	tmp = current;
+	current = (header_segment_t *)((uint8_t *)to_split + begin);
 	current->size = end;
-	current->next = tmp;
+	current->next = tmp->next;
+	tmp->next = current;
 }
 
 
@@ -121,10 +125,9 @@ void	*new_malloc(size_t size, enum chunk_size_e chunk_type)
 			MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (new_chunk == MAP_FAILED)
 		return NULL;
+	new_chunk->next = NULL;
 	push_back_chunk(hsegment + chunk_type, new_chunk);
 	split_segment(new_chunk, size, mmap_size_to_alloc - size);
-	new_chunk->size = size | 1;
-	new_chunk->next = NULL;
 	return (void *)((uint8_t *)new_chunk + HEADER_SIZE);
 }
 

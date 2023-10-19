@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 01:42:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/19 15:39:54 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/19 19:59:24 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct header_segment_s
 	struct header_segment_s	*next;
 } header_segment_t;
 
-static header_segment_t *hsegment[3] __attribute__((unused));
+extern header_segment_t *hsegment[3];
 
 void	show_alloc_mem(void);
 // TO DELETE
