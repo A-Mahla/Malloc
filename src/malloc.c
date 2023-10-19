@@ -6,17 +6,26 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 13:00:36 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/18 18:25:43 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/19 15:34:14 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "malloc.h"
 
 void	*new_malloc(size_t size, enum chunk_size_e chunk_type);
-void	last_chunk(header_segment_t **begin, header_segment_t *next);
+void	push_back_chunk(header_segment_t **begin, header_segment_t *next);
 void	split_segment(header_segment_t *to_split, size_t begin, size_t end);
 void	*find_chunk_free(size_t size_chunk, enum chunk_size_e chunk_type);
 
+
+/*
+ * @function ft_malloc()
+ *
+ * @brief entrypoint allocator
+ *
+ * @return void*
+ *
+ */
 
 void	*ft_malloc(size_t size)
 {
@@ -30,6 +39,15 @@ void	*ft_malloc(size_t size)
 	return chunk;
 }
 
+
+/*
+ * @function find_chunk_free()
+ *
+ * @brief find a chunk freed or call new_malloc() to mmap a new page.
+ *
+ * @return void*
+ *
+ */
 
 void	*find_chunk_free(size_t chunk_size, enum chunk_size_e chunk_type)
 {
@@ -49,6 +67,15 @@ void	*find_chunk_free(size_t chunk_size, enum chunk_size_e chunk_type)
 }
 
 
+/*
+ * @function split_segment()
+ *
+ * @brief split the current memory chunk to fit to the size give to malloc.
+ *
+ * @return void
+ *
+ */
+
 void	split_segment(header_segment_t *to_split, size_t begin, size_t end)
 {
 	header_segment_t	*current;
@@ -66,20 +93,52 @@ void	split_segment(header_segment_t *to_split, size_t begin, size_t end)
 }
 
 
+/*
+ * @function new_malloc()
+ *
+ * @brief allocate a new memory page to increase available memory in the process.
+ *
+ * @return void*
+ *
+ */
+
 void	*new_malloc(size_t size, enum chunk_size_e chunk_type)
 {
 	header_segment_t	*new_chunk;
+	size_t				mmap_size_to_alloc;
 
-	new_chunk = mmap(0, size, PROT_READ | PROT_WRITE,
-				 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	last_chunk(hsegment + chunk_type, new_chunk);
+	switch (chunk_type) {
+		case TINY:
+			mmap_size_to_alloc = (TINY_SIZE * 100) & ~(getpagesize() - 1);
+			break;
+		case SMALL:
+			mmap_size_to_alloc = (SMALL_SIZE * 100) & ~(getpagesize() - 1);
+			break;
+		default:
+			mmap_size_to_alloc = size;
+	}
+	new_chunk = mmap(0, mmap_size_to_alloc, PROT_READ | PROT_WRITE,
+			MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	if (new_chunk == MAP_FAILED)
+		return NULL;
+	push_back_chunk(hsegment + chunk_type, new_chunk);
+	split_segment(new_chunk, size, mmap_size_to_alloc - size);
 	new_chunk->size = size | 1;
 	new_chunk->next = NULL;
 	return (void *)((uint8_t *)new_chunk + HEADER_SIZE);
 }
 
 
-void	last_chunk(header_segment_t **begin, header_segment_t *next)
+/*
+ * @function push_back_chunk()
+ *
+ * @brief push back the (*next) in the (**begin) chunk list.
+ *
+ * @return void
+ *
+ */
+
+void	push_back_chunk(header_segment_t **begin, header_segment_t *next)
 {
 	header_segment_t	*current = *begin;
 

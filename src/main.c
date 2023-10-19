@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 13:35:00 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/18 18:01:53 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/19 15:43:16 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,16 @@
 
 int	main(void)
 {
-	ft_malloc(16);
-	ft_malloc(16);
-	printf("%d", 16 | 1);
+
+	char *test1 = ft_malloc(16);
+	if (!test1)
+		printf("test1 : WHAT !!!!");
+	char *test2 = ft_malloc(16);
+	if (!test2)
+		printf("test2 : WHAT !!!!");
+	
+	ft_free(test1);
+	ft_free(test2);
 	return 0;
 }
 // 1 0001
