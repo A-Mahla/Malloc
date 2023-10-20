@@ -6,18 +6,18 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 13:00:36 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/19 21:15:45 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/21 00:15:40 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "malloc.h"
 
 void	*new_malloc(size_t size, enum chunk_size_e chunk_type);
-void	push_back_chunk(header_segment_t **begin, header_segment_t *next);
-void	split_segment(header_segment_t *to_split, size_t begin, size_t end);
+void	push_back_page(struct header_page **begin, struct header_page *next);
+void	split_segment(struct header_chunk *to_split, size_t begin, size_t end);
 void	*find_chunk_free(size_t size_chunk, enum chunk_size_e chunk_type);
 
-header_segment_t *hsegment[3] = {NULL, NULL, NULL};
+struct header_page *page[3] = {NULL, NULL, NULL};
 
 
 /*
@@ -35,8 +35,8 @@ void	*ft_malloc(size_t size)
 	enum	chunk_size_e	chunk_type;
 	void	*chunk;
 
-	chunk_size = ALIGN(size + HEADER_SIZE);
-	chunk_type = chunk_size <= TINY_SIZE ? TINY : chunk_size <= SMALL_SIZE ? SMALL : LARGE;
+	chunk_type = size <= TINY_SIZE ? TINY : size <= SMALL_SIZE ? SMALL : LARGE;
+	chunk_size = ALIGN(size + HEADER_CHUNK_SIZE);
 	chunk = find_chunk_free(chunk_size, chunk_type);
 	return chunk;
 }
@@ -53,20 +53,25 @@ void	*ft_malloc(size_t size)
 
 void	*find_chunk_free(size_t chunk_size, enum chunk_size_e chunk_type)
 {
-	header_segment_t	*current = hsegment[chunk_type];
-	size_t				current_chunk_size;
-
-	if (!current) {
-		return new_malloc(chunk_size, chunk_type);
-	}
-	while (current) {
-		current_chunk_size = current->size & ~1L;
-		if (current_chunk_size >= chunk_size && !(current->size & 1)) {
-			split_segment(current, chunk_size, current_chunk_size - chunk_size);
-			return (void *)((uint8_t *)current + HEADER_SIZE);
-		}
-		current = current->next;
-	}
+//	struct header_page	*current_page;
+//	struct header_chunk	*current_chunk;
+//	size_t				current_chunk_size;
+//
+//	current_page = page[chunk_type];
+//	while (current_page) {
+//		current_chunk = (struct header_chunk *)((uint8_t *)current_page + HEADER_PAGE_SIZE);
+//		while (current_chunk) {
+//			current_chunk_size = current_chunk->size & ~1L;
+//			if (current_chunk_size >= chunk_size && !(current_chunk->size & 1)) {
+//				current_page->nb_allocated_chunk++;
+//				current_chunk->current_page = current_page;
+//				split_segment(current_chunk, chunk_size, current_chunk_size - chunk_size);
+//				return (void *)((uint8_t *)current_chunk + HEADER_CHUNK_SIZE);
+//			}
+//			current_chunk = current_chunk->next;
+//		}
+//		current_page = current_page->next;
+//	}
 	return new_malloc(chunk_size, chunk_type);
 }
 
@@ -80,20 +85,21 @@ void	*find_chunk_free(size_t chunk_size, enum chunk_size_e chunk_type)
  *
  */
 
-void	split_segment(header_segment_t *to_split, size_t begin, size_t end)
+void	split_segment(struct header_chunk *to_split, size_t begin, size_t end)
 {
-	header_segment_t	*current;
-	header_segment_t	*tmp;
+	struct header_chunk	*current;
+	struct header_chunk	*tmp;
 
-	if (end < HEADER_SIZE)
+	if (end < HEADER_CHUNK_SIZE)
 		return;
 	current = to_split;
 	current->size = begin | 1;
 	tmp = current;
-	current = (header_segment_t *)((uint8_t *)to_split + begin);
+	current = (struct header_chunk *)((uint8_t *)to_split + begin);
 	current->size = end;
-	current->next = tmp->next;
 	tmp->next = current;
+	current->prev = tmp;
+	current->current_page = tmp->current_page;
 }
 
 
@@ -108,27 +114,32 @@ void	split_segment(header_segment_t *to_split, size_t begin, size_t end)
 
 void	*new_malloc(size_t size, enum chunk_size_e chunk_type)
 {
-	header_segment_t	*new_chunk;
+	struct header_page	*new_page;
+	struct header_chunk	*new_chunk;
 	size_t				mmap_size_to_alloc;
 
 	switch (chunk_type) {
 		case TINY:
-			mmap_size_to_alloc = (TINY_SIZE * 100) & ~(getpagesize() - 1);
+			mmap_size_to_alloc = ((TINY_SIZE + HEADER_CHUNK_SIZE) * 100) + HEADER_PAGE_SIZE;
 			break;
 		case SMALL:
-			mmap_size_to_alloc = (SMALL_SIZE * 100) & ~(getpagesize() - 1);
+			mmap_size_to_alloc = ((SMALL_SIZE + HEADER_CHUNK_SIZE) * 100) + HEADER_PAGE_SIZE;
 			break;
 		default:
-			mmap_size_to_alloc = size;
+			mmap_size_to_alloc = size + HEADER_PAGE_SIZE;
 	}
-	new_chunk = mmap(0, mmap_size_to_alloc, PROT_READ | PROT_WRITE,
+	mmap_size_to_alloc = (mmap_size_to_alloc + (getpagesize() - 1)) & ~(getpagesize() - 1);
+	new_page = mmap(0, mmap_size_to_alloc, PROT_READ | PROT_WRITE,
 			MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	if (new_chunk == MAP_FAILED)
+	if (new_page == MAP_FAILED)
 		return NULL;
-	new_chunk->next = NULL;
-	push_back_chunk(hsegment + chunk_type, new_chunk);
+	new_page->size = mmap_size_to_alloc;
+	push_back_page(page + chunk_type, new_page);
+	new_chunk = (struct header_chunk *)((uint8_t *)new_page + HEADER_PAGE_SIZE);
 	split_segment(new_chunk, size, mmap_size_to_alloc - size);
-	return (void *)((uint8_t *)new_chunk + HEADER_SIZE);
+	new_chunk->prev = NULL;
+	new_chunk->current_page = new_page;
+	return (void *)((uint8_t *)new_chunk + HEADER_CHUNK_SIZE);
 }
 
 
@@ -141,10 +152,13 @@ void	*new_malloc(size_t size, enum chunk_size_e chunk_type)
  *
  */
 
-void	push_back_chunk(header_segment_t **begin, header_segment_t *next)
+void	push_back_page(struct header_page **begin, struct header_page *next)
 {
-	header_segment_t	*current = *begin;
+	struct header_page	*current = *begin;
 
+	next->next = NULL;
+	next->prev = NULL;
+	next->nb_allocated_chunk = 1;
 	if (!current){
 		*begin = next;
 		return;
@@ -152,4 +166,5 @@ void	push_back_chunk(header_segment_t **begin, header_segment_t *next)
 	while (current->next)
 		current = current->next;
 	current->next = next;
+	next->prev = current;
 }

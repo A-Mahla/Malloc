@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 01:42:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/19 19:59:24 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/20 21:43:17 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@
 # define SMALL_SIZE 1024
 # define ALIGNMENT 16
 # define ALIGN(size) (((size) + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1))
-# define HEADER_SIZE (ALIGN(sizeof(size_t) + sizeof(header_segment_t *)))
+# define HEADER_CHUNK_SIZE (ALIGN(sizeof(struct header_chunk)))
+# define HEADER_PAGE_SIZE (ALIGN(sizeof(struct header_page)))
 # define offsetof(TYPE, MEMBER) ((size_t)&((TYPE *)0)->MEMBER)
 #define container_of(ptr, type, member)	\
 ({	\
@@ -42,13 +43,23 @@ enum chunk_size_e
 	LARGE
 };
 
-typedef struct header_segment_s
+struct header_chunk
 {
-	size_t					size;
-	struct header_segment_s	*next;
-} header_segment_t;
+	size_t				size;
+	struct header_chunk	*next;
+	struct header_chunk	*prev;
+	struct header_page	*current_page;
+};
 
-extern header_segment_t *hsegment[3];
+struct header_page
+{
+	size_t				size;
+	struct header_page	*next;
+	struct header_page	*prev;
+	size_t				nb_allocated_chunk;
+};
+
+extern struct header_page *page[3];
 
 void	show_alloc_mem(void);
 // TO DELETE
