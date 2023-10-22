@@ -6,7 +6,7 @@
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/10/22 21:51:27 by amahla ###       ########     ########    #
+#    Updated: 2023/10/22 22:33:34 by amahla ###       ########     ########    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ test5	: $(OUTDIR)	$(addprefix $(OUTDIR)/, $(OBJ5))
 	$(CC) $(CFLAGS) -o $@ $(addprefix $(OUTDIR)/, $(OBJ5)) $(INC)
 
 test6	: $(OUTDIR)	$(addprefix $(OUTDIR)/, $(OBJ6))
-	$(CC) $(CFLAGS) -o $@ $(addprefix $(OUTDIR)/, $(OBJ6)) $(INC) -lpthread $(LIB)
+	$(CC) $(CFLAGS) -o $@ $(addprefix $(OUTDIR)/, $(OBJ6)) $(INC) -lpthread
 
 $(OUTDIR)	:
 	@mkdir -p $(addprefix $@/, $(SRCDIR))
