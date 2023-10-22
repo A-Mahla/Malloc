@@ -6,26 +6,27 @@
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/10/22 03:26:08 by amahla ###       ########     ########    #
+#    Updated: 2023/10/22 16:24:26 by amahla ###       ########     ########    #
 #                                                                              #
 # **************************************************************************** #
 
 
-#NAME	= 	libft_malloc_$(HOSTTYPE).so
-NAME	= 	malloc_$(HOSTTYPE)
+NAME	= 	libft_malloc_$(HOSTTYPE).so
 CC		:= 	gcc
 CFLAGS	:= 	-Wall -Werror -Wextra
 DFLAGS	:= -MMD -MP
+LDFLAGS := -shared
 LIBDIR 	:= 	libft
+TESTDIR	:=	tests
 INC		:= 	-I inc -I $(addprefix 	$(LIBDIR)/, $(addprefix libft/, includes))
 LIBFT	:= 	-L libft -lft
 OUTDIR 	:= 	obj
 SRCDIR	:= src
 SRC		:= $(addprefix $(SRCDIR)/,	malloc.c			\
 									free.c				\
-									realloc.c				\
-									show_alloc_mem.c	\
-									main.c)
+									realloc.c			\
+									calloc.c			\
+									show_alloc_mem.c	)
 OBJ		:= $(SRC:.c=.o)
 DEP 	:= $(SRC:.c=.d)
 RM		:= rm -rf
@@ -39,28 +40,42 @@ endif
 all		: $(NAME)
 
 $(OUTDIR)/%.o	: %.c 
-	$(CC) $(DFLAGS) $(CFLAGS) $(INC) -o $@ -c $<
+	$(CC) -fPIC $(DFLAGS) $(CFLAGS) $(INC) -o $@ -c $<
 
 $(NAME)	: $(OUTDIR)	$(addprefix $(OUTDIR)/, $(OBJ))
 	@$(MAKE) -j -C $(LIBDIR) > /dev/null
-	$(CC) $(CFLAGS) -o $@ $(addprefix $(OUTDIR)/, $(OBJ)) $(INC) $(LIBFT)
+	$(CC) $(LDFLAGS) $(CFLAGS) -o $@ $(addprefix $(OUTDIR)/, $(OBJ)) $(INC) $(LIBFT)
 
 $(OUTDIR)	:
 	@mkdir -p $(addprefix $@/, $(SRCDIR))
 
 
-.PHONY	: all clean fclean re
+.PHONY	: all clean fclean re debug run test
 
 debug	: CFLAGS=-g3 -Wall -Werror -Wextra
 debug	: all
 
+export_lib	: $(NAME)
+	ln -fs $(NAME) libft_malloc.so
+	cp libft_malloc.so tests/.
+
+run		: $(NAME)
+	ln -fs $(NAME) libft_malloc.so
+	$(MAKE) run -C $(TESTDIR)
+
+run_libc	: $(NAME)
+	ln -fs $(NAME) libft_malloc.so
+	$(MAKE) run_libc -C $(TESTDIR)
+
 clean	:
 	@$(MAKE) clean -C $(LIBDIR) > /dev/null
+	@$(MAKE) clean -C $(TESTDIR) > /dev/null
 	$(RM) $(OUTDIR)
 
 fclean	: clean
 	@$(MAKE) fclean -C $(LIBDIR) > /dev/null
-	$(RM) $(NAME)
+	@$(MAKE) fclean -C $(TESTDIR) > /dev/null
+	$(RM) $(NAME) libft_malloc.so
 
 re		: fclean
 	@$(MAKE) re -C $(LIBDIR) > /dev/null

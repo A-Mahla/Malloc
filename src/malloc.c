@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 13:00:36 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/22 04:08:09 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/22 14:53:31 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	split_segment(struct header_chunk *to_split, size_t begin, size_t end);
 void	*find_chunk_free(size_t size_chunk, enum chunk_size_e chunk_type);
 
 struct header_page *page[3] = {NULL, NULL, NULL};
+pthread_mutex_t		multi_threading = PTHREAD_MUTEX_INITIALIZER;
 
 
 /*
@@ -30,7 +31,7 @@ struct header_page *page[3] = {NULL, NULL, NULL};
  */
 
 // CHANGE TO malloc()
-void	*ft_malloc(size_t size)
+void	*malloc(size_t size)
 {
 	size_t	chunk_size;
 	enum	chunk_size_e	chunk_type;
@@ -38,9 +39,11 @@ void	*ft_malloc(size_t size)
 
 	if (!size)
 		return NULL;
+	pthread_mutex_lock(&multi_threading);
 	chunk_type = size <= TINY_SIZE ? TINY : size <= SMALL_SIZE ? SMALL : LARGE;
 	chunk_size = ALIGN(size + HEADER_CHUNK_SIZE);
 	chunk = find_chunk_free(chunk_size, chunk_type);
+	pthread_mutex_unlock(&multi_threading);
 	return chunk;
 }
 

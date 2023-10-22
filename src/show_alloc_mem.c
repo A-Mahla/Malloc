@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/22 03:04:37 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/22 04:09:39 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/22 14:35:16 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@ void	ft_putnbr_base(uintptr_t ptr, char *base, size_t size);
 void	display_chunk(struct header_chunk *current_chunk);
 
 
+/*
+ * @function show_alloc_mem()
+ *
+ * @brief display memory used by the program
+ *
+ * @return void
+ *
+ */
+
 void	show_alloc_mem(void)
 {
 	char	*page_type[3] = {"TINY", "SMALL", "LARGE"};
@@ -29,6 +38,15 @@ void	show_alloc_mem(void)
 	ft_putchar_fd('\n', 1);
 }
 
+
+/*
+ * @function display_page()
+ *
+ * @brief display memory pages.
+ *
+ * @return void
+ *
+ */
 
 void	display_page(struct header_page *current_page, char *page_type)
 {
@@ -51,6 +69,15 @@ void	display_page(struct header_page *current_page, char *page_type)
 }
 
 
+/*
+ * @function display_chunk()
+ *
+ * @brief display memory chunks.
+ *
+ * @return void
+ *
+ */
+
 void	display_chunk(struct header_chunk *current_chunk)
 {
 	uintptr_t	end;
@@ -68,6 +95,16 @@ void	display_chunk(struct header_chunk *current_chunk)
 	ft_putchar_fd('\n', 1);
 }
 
+
+/*
+ * @function ft_putnbr_base()
+ *
+ * @brief display number (uintptr_t ptr) in a base given as argument (char *base),
+ *        which has a size given as argument (size_t size).
+ *
+ * @return void
+ *
+ */
 
 void	ft_putnbr_base(uintptr_t ptr, char *base, size_t size)
 {
