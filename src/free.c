@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   free.c                                          :+:       :+: :+: :+:    */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 22:23:47 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/21 00:11:43 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/22 02:50:07 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ void	group_segment(struct header_chunk *first, struct header_chunk *second);
 void	coalesce(struct header_chunk *ptr);
 
 
+/*
+ * @function free()
+ *
+ * @brief entrypoint deallocator
+ *
+ * @return void
+ *
+ */
+
+// CHANGE TO free()
 void	ft_free(void *ptr)
 {
 	struct header_chunk	*tmp;
@@ -31,6 +41,15 @@ void	ft_free(void *ptr)
 	free_memory(tmp);
 }
 
+
+/*
+ * @function free_memory()
+ *
+ * @brief this function decremente nb_allocated_chunk in the corresponding 
+ *
+ * @return void
+ *
+ */
 
 void	free_memory(struct header_chunk *chunk)
 {
@@ -65,10 +84,9 @@ void	remove_page(struct header_page *current_page)
 
 void	coalesce(struct header_chunk *ptr)
 {
-	if (ptr->next && ptr->next->size & 1) {
+	if (ptr->next && !(ptr->next->size & 1))
 		group_segment(ptr, ptr->next);
-	}
-	if (ptr->prev && ptr->prev->size & 1)
+	if (ptr->prev && !(ptr->prev->size & 1))
 		group_segment(ptr->prev, ptr);
 }
 

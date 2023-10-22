@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   malloc.h                                           :+:      :+:    :+:   */
+/*   malloc.h                                        :+:       :+: :+: :+:    */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 01:42:58 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/20 21:43:17 by amahla           ###   ########.fr       */
+/*   Updated: 2023/10/22 04:05:59 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	show_alloc_mem(void);
 // TO DELETE
 void	*ft_malloc(size_t size);
 void	ft_free(void *ptr);
+void	*ft_realloc(void *ptr, size_t size);
+# include <stdio.h>
 /////////////
 
 
