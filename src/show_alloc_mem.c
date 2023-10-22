@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/22 03:04:37 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/22 17:38:04 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/22 21:39:50 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ void	show_alloc_mem(void)
 	char	*page_type[3] = {"TINY", "SMALL", "LARGE"};
 
 	ft_putchar_fd('\n', 1);
+	pthread_mutex_lock(&multi_threading);
 	for (enum chunk_size_e type = TINY; type <= LARGE; type++)
 		display_page(page[type], page_type[type]);
+	pthread_mutex_unlock(&multi_threading);
 	ft_putchar_fd('\n', 1);
 }
 
