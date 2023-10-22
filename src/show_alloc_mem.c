@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/22 03:04:37 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/22 14:35:16 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/22 17:38:04 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	display_page(struct header_page *current_page, char *page_type)
 {
 	struct header_chunk	*current_chunk;
 
+	if (current_page && !current_page->nb_allocated_chunk)
+		return;
 	while (current_page) {
 		ft_putstr_fd(page_type, 1);
 		ft_putstr_fd(" : 0x", 1);
@@ -62,6 +64,8 @@ void	display_page(struct header_page *current_page, char *page_type)
 		while (current_chunk) {
 			if (current_chunk->size & 1)
 				display_chunk(current_chunk);
+//			else								// to check free chunk
+//				display_chunk(current_chunk);
 			current_chunk = current_chunk->next;
 		}
 		current_page = current_page->next;

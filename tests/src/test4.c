@@ -22,5 +22,6 @@ int main()
     malloc(16*M);
     malloc(128*M);
     show_alloc_mem(); 
+
     return (0); 
 }
