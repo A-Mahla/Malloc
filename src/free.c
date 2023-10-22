@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 22:23:47 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/22 17:19:07 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/22 22:22:29 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ bool	is_last_page(struct header_page *current_page);
  *
  */
 
-// CHANGE TO free()
 void	free(void *ptr)
 {
 	struct header_chunk	*tmp;

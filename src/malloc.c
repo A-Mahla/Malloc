@@ -6,7 +6,7 @@
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/17 13:00:36 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/22 21:57:48 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/22 22:22:16 by amahla ###       ########     ########   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ pthread_mutex_t		multi_threading = PTHREAD_MUTEX_INITIALIZER;
  *
  */
 
-// CHANGE TO malloc()
 void	*malloc(size_t size)
 {
 	size_t	chunk_size;
