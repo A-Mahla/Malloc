@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    :::       :::     :::   */
-/*   realloc.c                                       :+:       :+: :+: :+:    */
+/*   realloc.c                                          :+:      :+:    :+:   */
 /*                                                 +:++:+     +:+  +  +:+     */
 /*   By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+      */
 /*                                             +#+    +#+   +#+     +#+       */
 /*   Created: 2023/10/22 03:04:52 by amahla  #+#      #+#  #+#     #+#        */
-/*   Updated: 2023/10/22 16:12:06 by amahla ###       ########     ########   */
+/*   Updated: 2023/10/23 13:31:18 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	*realloc(void *ptr, size_t size)
 	if (is_memory_sufficient)
 		goto exit_realloc;
 	cpy = malloc(size);
-	if (ptr == NULL)
+	if (ptr == NULL || cpy == NULL)
 		goto exit_realloc;
 	if (size == 0)
 		goto free_realloc;
