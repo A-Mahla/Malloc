@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                     :::       :::     :::    #
-#    Makefile                                        :+:       :+: :+: :+:     #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                  +:++:+     +:+  +  +:+      #
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/10/22 22:33:34 by amahla ###       ########     ########    #
+#    Updated: 2023/10/25 14:07:34 by amahla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ RM		:=	rm -rf
 
 
 all		:
-	$(MAKE) export_lib -C ..
+	$(MAKE) -C ..
 	$(MAKE) $(NAME)
 
 $(OUTDIR)/%.o	: %.c 
@@ -70,7 +70,7 @@ $(OUTDIR)	:
 .PHONY	: all clean fclean re run
 
 run		:
-	$(MAKE) export_lib -C ..
+	$(MAKE) -C ..
 	$(MAKE) $(NAME)
 	./run_linux.sh /usr/bin/time -v ./test0
 	./run_linux.sh /usr/bin/time -v ./test1

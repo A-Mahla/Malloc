@@ -1,17 +1,18 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                     :::       :::     :::    #
-#    Makefile                                        :+:       :+: :+: :+:     #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                  +:++:+     +:+  +  +:+      #
 #    By: amahla <ammah.connect@outlook.fr>       +#+  +:+    +#+     +#+       #
 #                                              +#+    +#+   +#+     +#+        #
 #    Created: 2023/10/17 02:01:51 by amahla  #+#      #+#  #+#     #+#         #
-#    Updated: 2023/10/22 21:57:36 by amahla ###       ########     ########    #
+#    Updated: 2023/10/25 14:08:04 by amahla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME	= 	libft_malloc_$(HOSTTYPE).so
+#NAME	= 	libft_malloc_$(HOSTTYPE).so
+NAME	= 	libft_malloc.so
 CC		:= 	gcc
 CFLAGS	:= 	-Wall -Werror -Wextra
 DFLAGS	:= -MMD -MP
@@ -56,15 +57,12 @@ debug	: CFLAGS=-g3 -Wall -Werror -Wextra
 debug	: all
 
 export_lib	: $(NAME)
-	ln -fs $(NAME) libft_malloc.so
 	cp libft_malloc.so tests/.
 
 run		: $(NAME)
-	ln -fs $(NAME) libft_malloc.so
 	$(MAKE) run -C $(TESTDIR)
 
 run_libc	: $(NAME)
-	ln -fs $(NAME) libft_malloc.so
 	$(MAKE) run_libc -C $(TESTDIR)
 
 clean	:
