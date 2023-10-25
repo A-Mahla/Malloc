@@ -38,9 +38,9 @@ To run the command, open your terminal and follow these steps:
 
 
 This custom C implementation of the malloc library functions is functional but
-not really optimized. Let's take a look at the implementation in the `src` file.
-It creates the shared library `libft_malloc.so` which can be used to replace
-malloc in all system commands.
+not really optimized. This serves primarily as a proof of concept. Let's take a
+look at the implementation in the `src` file. It creates the shared library
+`libft_malloc.so` which can be used to replace malloc in all system commands.
 
 To use my implementation on your program:
 
