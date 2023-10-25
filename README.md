@@ -1,5 +1,5 @@
 # Malloc - My Unique Take on the Classic C Allocator
-![mybadge](https://badgen.net/badge/SKILLS/%20C,%20ALLOCATOR%20/red?scale=1.2)
+![mybadge](https://badgen.net/badge/SKILLS/%20C,%20CUSTOM%20ALLOCATOR%20/red?scale=1.2)
 
 #### This project is about implementing a dynamic memory allocation mechanism.
 
@@ -7,6 +7,8 @@
 🔧 System Requirements:
    - Operating System: Linux 64_X86 Distribution / MacOS
    - Software: [make](https://www.gnu.org/software/make/), [gcc](https://gcc.gnu.org/), 
+
+<br>
 
 ## Usage
  
@@ -30,6 +32,7 @@ To run the command, open your terminal and follow these steps:
       (cd /path/to/project/directory && make run)
       ```
 
+<br>
 
 ## About
 
@@ -40,7 +43,7 @@ To use my implementation on your program:
 
 ```shell
 (export LD_LIBRARY_PATH=/path/to/project/directory && export LD_PRELOAD=libft_malloc.so && <program> )
-``
+```
 
 It exposes the following methods:
 
