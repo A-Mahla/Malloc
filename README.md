@@ -20,7 +20,7 @@ To run the command, open your terminal and follow these steps:
       (cd /path/to/project/directory && make)
       ```
 
-   - To run Units Tests with my allocator malloc:
+   - To run Units Tests with my malloc allocator:
 
       ```shell
       (cd /path/to/project/directory && make run)
@@ -29,7 +29,7 @@ To run the command, open your terminal and follow these steps:
    - To run same Units Tests with the original malloc:
 
       ```shell
-      (cd /path/to/project/directory && make run)
+      (cd /path/to/project/directory && make run_libc)
       ```
 
 <br>
